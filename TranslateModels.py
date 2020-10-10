@@ -2,7 +2,6 @@ import random
 from typing import Tuple
 import torch
 import torch.nn as nn
-import torch.optim as optim
 import torch.nn.functional as F
 from torch import Tensor
 
@@ -10,7 +9,7 @@ from torch import Tensor
 class Encoder(nn.Module):
     def __init__(self,
                  input_dim: int,
-                 emb_dim: int,
+                 emb_dim: int,  # embedded dimension
                  enc_hid_dim: int,
                  dec_hid_dim: int,
                  dropout: float):
