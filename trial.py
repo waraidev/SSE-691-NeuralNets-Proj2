@@ -11,6 +11,7 @@ import torch.nn as nn
 # local imports
 from TranslateModels import Encoder, Decoder, Attention, Seq2Seq
 from TrainModel import train, evaluate, epoch_time
+from FastIterator import batch_size_fn, FastIterator
 
 SRC = Field(tokenize="spacy",
             tokenizer_language="de",
@@ -24,7 +25,6 @@ TRG = Field(tokenize="spacy",
             eos_token='<eos>',
             lower=True)
 
-
 train_data, valid_data, test_data = Multi30k.splits(exts=('.de', '.en'),
                                                     fields=(SRC, TRG))
 
@@ -36,10 +36,34 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 BATCH_SIZE = 128
 
-train_iterator, valid_iterator, test_iterator = BucketIterator.splits(
-    (train_data, valid_data, test_data),
-    batch_size=BATCH_SIZE,
-    device=device)
+# train_iterator, valid_iterator, test_iterator = BucketIterator.splits(
+#     (train_data, valid_data, test_data),
+#     batch_size=BATCH_SIZE,
+#     device=device)
+
+train_iterator = FastIterator(train_data,
+                              batch_size=BATCH_SIZE,
+                              device=device,
+                              repeat=False,
+                              batch_size_fn=batch_size_fn,
+                              train=True,
+                              shuffle=True)
+
+valid_iterator = FastIterator(valid_data,
+                              batch_size=BATCH_SIZE,
+                              device=device,
+                              repeat=False,
+                              batch_size_fn=batch_size_fn,
+                              train=True,
+                              shuffle=True)
+
+test_iterator = FastIterator(test_data,
+                             batch_size=BATCH_SIZE,
+                             device=device,
+                             repeat=False,
+                             batch_size_fn=batch_size_fn,
+                             train=True,
+                             shuffle=True)
 
 # Model Setup
 INPUT_DIM = len(SRC.vocab)

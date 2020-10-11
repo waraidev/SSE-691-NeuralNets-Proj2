@@ -4,17 +4,22 @@ import torch.nn as nn
 from torch import optim
 from torchtext.data import BucketIterator
 
+from FastIterator import FastIterator
+
 
 def train(model: nn.Module,
-          iterator: BucketIterator,
+          iterator: FastIterator,
           optimizer: optim.Optimizer,
           criterion: nn.Module,
           clip: float):
     model.train()
 
     epoch_loss = 0
+    index = 0
 
     for _, batch in enumerate(iterator):
+        index += 1
+
         src = batch.src
         trg = batch.trg
 
@@ -35,11 +40,13 @@ def train(model: nn.Module,
 
         epoch_loss += loss.item()
 
+        print('hi' + str(index))
+
     return epoch_loss / len(iterator)
 
 
 def evaluate(model: nn.Module,
-             iterator: BucketIterator,
+             iterator: FastIterator,
              criterion: nn.Module):
     model.eval()
 
