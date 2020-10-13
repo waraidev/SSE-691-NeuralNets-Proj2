@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 import math
 import time
 
@@ -156,4 +154,3 @@ print(total_mins)
 plt.plot(all_train_loss)
 plt.plot(all_valid_loss)
 plt.show()
->>>>>>> Stashed changes

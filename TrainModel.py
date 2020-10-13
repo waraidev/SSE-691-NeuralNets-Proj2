@@ -2,13 +2,6 @@
 import torch
 import torch.nn as nn
 from torch import optim
-<<<<<<< HEAD
-
-import random
-=======
-from torchtext.data import BucketIterator
-
->>>>>>> ea3a1b6e6d2fa12160c1af22efd59ae9571bd279
 from FastIterator import FastIterator
 
 
@@ -23,11 +16,7 @@ def train(model: nn.Module,
     index = 0
 
     for _, batch in enumerate(iterator):
-<<<<<<< HEAD
-=======
-        index += 1
 
->>>>>>> ea3a1b6e6d2fa12160c1af22efd59ae9571bd279
         src = batch.src
         trg = batch.trg
 
@@ -48,14 +37,10 @@ def train(model: nn.Module,
 
         epoch_loss += loss.item()
 
-<<<<<<< HEAD
         index += 1
 
         if index % 200 == 0:
             print("Run " + str(index) + " of iterator")
-=======
-        print('hi' + str(index))
->>>>>>> ea3a1b6e6d2fa12160c1af22efd59ae9571bd279
 
     return epoch_loss / len(iterator)
 
